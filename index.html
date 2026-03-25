@@ -74,8 +74,8 @@
     .faces-option .desc{font-size:.9rem}
 
     /* DVPRS vizualas */
-    .dvprs-horizontal{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
-    .dvprs-item{min-width:170px;border-radius:10px;padding:8px 10px;font-size:.9rem;display:flex;flex-direction:column;align-items:center}
+    .dvprs-horizontal{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:8px;padding-bottom:8px;overflow-x:visible}
+    .dvprs-item{min-width:0;border-radius:10px;padding:8px 6px;font-size:.82rem;display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:space-between}
     .dvprs-face{font-size:2rem;margin-bottom:4px}
     .dvprs-mild{background:#e3f9e5} .dvprs-moderate{background:#fff9e3} .dvprs-severe{background:#ffe5e5}
 
@@ -99,12 +99,18 @@
     #install-banner .actions{display:flex;gap:8px}
 
     /* Mobile tweaks */
+    .nrs-radio-scale{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:6px;align-items:end;margin-top:8px}
+    .nrs-radio-option{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 2px;border:1px solid #e5e7eb;border-radius:10px;background:#fafafa;font-size:.88rem}
+    .nrs-radio-option strong{font-size:.95rem}
+
     @media (max-width:820px){
       .grid-painad,.grid-paic{grid-template-columns:30px 1fr}
       .grid-painad .col-3,.grid-painad .col-4,
       .grid-paic .col-3,.grid-paic .col-4{grid-column: span 2}
       input[type="number"]{max-width:160px}
       .modal-text{font-size:9vw}
+      .dvprs-horizontal{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .nrs-radio-scale{grid-template-columns:repeat(4,minmax(0,1fr))}
     }
   </style>
 </head>
@@ -289,9 +295,21 @@
 
       <hr>
       <h3>NRS (0–10)</h3>
-      <div class="row">
-        <input type="range" id="nrs-slider" min="0" max="10" value="0" oninput="document.getElementById('nrs-value').textContent=this.value">
-        <span><strong>NRS:</strong> <span id="nrs-value">0</span>/10</span>
+      <p class="hint">Pasirinkite vieną skaičių nuo 0 iki 10.</p>
+      <div class="nrs-radio-scale">
+        <label class="nrs-radio-option"><strong>0</strong><input type="radio" name="nrs-radio" value="0"></label>
+        <label class="nrs-radio-option"><strong>1</strong><input type="radio" name="nrs-radio" value="1"></label>
+        <label class="nrs-radio-option"><strong>2</strong><input type="radio" name="nrs-radio" value="2"></label>
+        <label class="nrs-radio-option"><strong>3</strong><input type="radio" name="nrs-radio" value="3"></label>
+        <label class="nrs-radio-option"><strong>4</strong><input type="radio" name="nrs-radio" value="4"></label>
+        <label class="nrs-radio-option"><strong>5</strong><input type="radio" name="nrs-radio" value="5"></label>
+        <label class="nrs-radio-option"><strong>6</strong><input type="radio" name="nrs-radio" value="6"></label>
+        <label class="nrs-radio-option"><strong>7</strong><input type="radio" name="nrs-radio" value="7"></label>
+        <label class="nrs-radio-option"><strong>8</strong><input type="radio" name="nrs-radio" value="8"></label>
+        <label class="nrs-radio-option"><strong>9</strong><input type="radio" name="nrs-radio" value="9"></label>
+        <label class="nrs-radio-option"><strong>10</strong><input type="radio" name="nrs-radio" value="10"></label>
+      </div>
+      <div style="margin-top:10px">
         <button class="primary-btn" onclick="summarizeSimpleScales()">Apskaičiuoti</button>
       </div>
 
@@ -352,7 +370,7 @@
         0–2 – skausmo nėra<br>
         3–7 – lengvas skausmas<br>
         8–13 – vidutinio stiprumo skausmas<br>
-        14 ir daugiau – stiprus skausmas
+        14–18 – stiprus skausmas
       </div>
       <p class="hint">Kiekvienam požymiui: 0 – nėra, 1 – lengvas, 2 – vidutinis, 3 – ryškus</p>
       <div class="grid-head grid-painad"><div>#</div><div>Požymis</div><div class="col-3">Pavyzdžiai</div><div class="col-4">Balai</div></div>
@@ -422,10 +440,71 @@ function setRole(role){
   btn.style.display=(role==='hcp')?'inline-block':'none';
 }
 function showScreen(id){
-  ['screen-start','screen-mmse','screen-scales'].forEach(s=>{
+  ['screen-start','screen-short-test','screen-mmse','screen-scales'].forEach(s=>{
     const el=document.getElementById(s);
     if(el) el.classList.toggle('hidden', s!==id);
   });
+}
+
+function hideAllScaleCards(){
+  ['card-simple','card-dvprs','card-painad','card-paic','card-abbey',
+   'recommend-card','branch-18-23','branch-0-17','branch-0-17-paic',
+   'simple-scales-result','dvprs-result-box','painad-result-box','paic-result-box','abbey-result-box'
+  ].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.classList.add('hidden');
+  });
+}
+
+function goToShortTest(){
+  showScreen('screen-short-test');
+}
+
+function routeByCategory(category){
+  const intro=document.getElementById('scale-intro');
+  hideAllScaleCards();
+  showScreen('screen-scales');
+
+  if(category==='none'){
+    intro.textContent='Pacientas neturi kognityvinių sutrikimų. Rekomenduojama DVPRS skalė.';
+    document.getElementById('card-dvprs').classList.remove('hidden');
+  }else if(category==='minimal'){
+    intro.textContent='Pacientas turi minimalius kognityvinius sutrikimus. Pasirinkite tinkamiausią 2 grupės vertinimo kelią.';
+    document.getElementById('branch-18-23').classList.remove('hidden');
+  }else if(category==='severe'){
+    intro.textContent='Pacientas turi sunkius kognityvinius sutrikimus. Rekomenduojama Abbey arba PAIC-15 skalė.';
+    document.getElementById('branch-0-17').classList.remove('hidden');
+  }
+}
+
+function calculateShortTest(autoRoute){
+  const q1=document.querySelector('input[name="short-q1"]:checked');
+  const q2=document.querySelector('input[name="short-q2"]:checked');
+  const q3=document.querySelector('input[name="short-q3"]:checked');
+
+  if(!q1 || !q2 || !q3){
+    alert('Atsakykite į visus 3 klausimus.');
+    return;
+  }
+
+  let score=0;
+  if(q1.value==='10') score++;
+  if(q2.value==='8') score++;
+  if(q3.value==='5') score++;
+
+  document.getElementById('short-test-result').classList.remove('hidden');
+  document.getElementById('short-test-main').innerHTML=`<strong>Rezultatas: ${score}/3.</strong>`;
+
+  if(score===3){
+    document.getElementById('short-test-extra').textContent='Pacientas greičiausiai gali patikimai savarankiškai vertinti skausmą.';
+    if(autoRoute) routeByCategory('none');
+  }else if(score===2){
+    document.getElementById('short-test-extra').textContent='Ribinis rezultatas. Rekomenduojamos paprastesnės 2 grupės skalės.';
+    if(autoRoute) routeByCategory('minimal');
+  }else{
+    document.getElementById('short-test-extra').textContent='Pacientui savarankiškas vertinimas gali būti nepatikimas. Rekomenduojamos stebėjimo skalės.';
+    if(autoRoute) routeByCategory('severe');
+  }
 }
 
 /* ---------------- Start with MMSE value ---------------- */
@@ -562,9 +641,7 @@ function calculateMmseFromForm(continueNext){
 /* ---------------- Routing pagal MMSE ---------------- */
 function routeByMmse(score){
   const intro=document.getElementById('scale-intro');
-  ['card-simple','card-dvprs','card-painad','card-paic','card-abbey',
-   'recommend-card','branch-18-23','branch-0-17','branch-0-17-paic']
-   .forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.add('hidden'); });
+  hideAllScaleCards();
 
   if(score>=24){
     intro.textContent=`MMSE ${score} – kognityvinių sutrikimų nėra. Rekomenduojama DVPRS skalė.`;
@@ -602,19 +679,20 @@ function summarizeSimpleScales(){
   const iowaSel=document.querySelector('input[name="iowa-thermo"]:checked');
   const vdsSel=document.querySelector('input[name="vds"]:checked');
   const facesSel=document.querySelector('input[name="faces"]:checked');
-  const nrsVal=Number(document.getElementById('nrs-slider').value);
+  const nrsSel=document.querySelector('input[name="nrs-radio"]:checked');
+  const nrsVal=nrsSel ? Number(nrsSel.value) : null;
 
   document.getElementById('simple-scales-main').innerHTML =
     `<strong>Iowa:</strong> ${(iowaSel?iowaSel.parentElement.textContent.trim():'–')}<br>
      <strong>VDS:</strong> ${(vdsSel?vdsSel.parentElement.textContent.trim():'–')}<br>
      <strong>Veidukai (FPS-R):</strong> ${(facesSel?facesSel.value:'–')}<br>
-     <strong>NRS:</strong> ${nrsVal}/10`;
+     <strong>NRS:</strong> ${nrsVal!==null ? nrsVal+'/10' : '–'}`;
 
   const vals=[];
   if(iowaSel) vals.push(Number(iowaSel.value)*(10/6));
   if(vdsSel)  vals.push(Number(vdsSel.value)*(10/3));
   if(facesSel) vals.push(Number(facesSel.value));
-  vals.push(nrsVal,nrsVal); // NRS – dvigubas svoris
+  if(nrsVal!==null) vals.push(nrsVal,nrsVal); // NRS – dvigubas svoris
 
   const minVal=Math.min(...vals), maxVal=Math.max(...vals);
   const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
