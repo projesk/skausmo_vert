@@ -74,8 +74,8 @@
     .faces-option .desc{font-size:.9rem}
 
     /* DVPRS vizualas */
-    .dvprs-horizontal{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:8px;padding-bottom:8px;overflow-x:visible}
-    .dvprs-item{min-width:0;border-radius:10px;padding:8px 6px;font-size:.82rem;display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:space-between}
+    .dvprs-horizontal{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+    .dvprs-item{min-width:170px;border-radius:10px;padding:8px 10px;font-size:.9rem;display:flex;flex-direction:column;align-items:center}
     .dvprs-face{font-size:2rem;margin-bottom:4px}
     .dvprs-mild{background:#e3f9e5} .dvprs-moderate{background:#fff9e3} .dvprs-severe{background:#ffe5e5}
 
@@ -99,18 +99,14 @@
     #install-banner .actions{display:flex;gap:8px}
 
     /* Mobile tweaks */
-    .nrs-radio-scale{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:6px;align-items:end;margin-top:8px}
-    .nrs-radio-option{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 2px;border:1px solid #e5e7eb;border-radius:10px;background:#fafafa;font-size:.88rem}
-    .nrs-radio-option strong{font-size:.95rem}
-
     @media (max-width:820px){
+      .grid-mmse{grid-template-columns:30px 1fr}
+      .grid-mmse .col-3,.grid-mmse .col-4{grid-column: span 2}
       .grid-painad,.grid-paic{grid-template-columns:30px 1fr}
       .grid-painad .col-3,.grid-painad .col-4,
       .grid-paic .col-3,.grid-paic .col-4{grid-column: span 2}
       input[type="number"]{max-width:160px}
       .modal-text{font-size:9vw}
-      .dvprs-horizontal{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .nrs-radio-scale{grid-template-columns:repeat(4,minmax(0,1fr))}
     }
   </style>
 </head>
@@ -131,11 +127,10 @@
   <div id="screen-start" class="card">
     <h1>PainCare LT</h1>
     <p class="hint">
-      Pasirinkite paciento kognityvinę būklę ir sistema nukreips į tinkamą skausmo vertinimo skalę.<br>
-      MMSE šiame lange nebenaudojamas.
+      Pasirinkite paciento kognityvinę būklę ir sistema nukreips į tinkamą skausmo vertinimo skalę.
     </p>
 
-    <h2>Pasirinkite paciento grupę</h2>
+    <h2>Paciento grupė</h2>
     <div class="row">
       <button class="primary-btn" onclick="routeByCategory('none')">Pacientas neturi kognityvinių sutrikimų</button>
       <button class="secondary-btn" onclick="routeByCategory('minimal')">Pacientas turi minimalius kognityvinius sutrikimus</button>
@@ -147,7 +142,7 @@
     </div>
   </div>
 
-  <!-- Trumpas testas -->
+  <!-- TRUMPAS TESTAS -->
   <div id="screen-short-test" class="hidden card">
     <h2>Trumpas testas: ar pacientas gali pats vertinti skausmą?</h2>
     <p class="hint">
@@ -229,7 +224,7 @@
   <!-- SKALIŲ EKRANAS (routing pagal MMSE) -->
   <div id="screen-scales" class="hidden">
     <div class="card">
-      <h2>2. Skausmo skalės parinkimas</h2>
+      <h2>Skausmo skalės parinkimas</h2>
       <p id="scale-intro" class="hint"></p>
     </div>
 
@@ -327,13 +322,15 @@
     <!-- DVPRS -->
     <div id="card-dvprs" class="card hidden">
       <h2>DVPRS (0–10)</h2>
-      <p class="hint">Pasirinkite skaičių, veiduką ir aprašymą, labiausiai atitinkantį skausmą.</p>
-      <div id="dvprs-options" class="dvprs-horizontal"></div>
-      <button class="primary-btn" onclick="calculateDvprs()">Skaičiuoti</button>
-      <div id="dvprs-result-box" class="hidden">
-        <p id="dvprs-result-main"></p>
-        <p id="dvprs-result-interpretation" class="hint"></p>
-      </div>
+      <p class="hint">Pasirinkite skausmo lygį.</p>
+      <div id="dvprs-options" class="pain-scale dvprs-style"></div>
+    </div>
+
+    <div id="dvprs-result-card" class="card hidden">
+      <h3>Rekomendacijos pagal skausmą</h3>
+      <p id="dvprs-result-main"></p>
+      <p id="dvprs-result-interpretation" class="hint"></p>
+      <button class="secondary-btn" onclick="resetApp()">Naujas pacientas</button>
     </div>
 
     <!-- PAINAD -->
@@ -365,13 +362,7 @@
     <!-- Abbey -->
     <div id="card-abbey" class="card hidden">
       <h2>Abbey skausmo skalė</h2>
-      <div class="abbey-note">
-        <strong>Trumpas vertinimo paaiškinimas:</strong><br>
-        0–2 – skausmo nėra<br>
-        3–7 – lengvas skausmas<br>
-        8–13 – vidutinio stiprumo skausmas<br>
-        14–18 – stiprus skausmas
-      </div>
+      <div class="abbey-note"><strong>Trumpas vertinimo paaiškinimas:</strong><br>0–2 – skausmo nėra<br>3–7 – lengvas skausmas<br>8–13 – vidutinio stiprumo skausmas<br>14–18 – stiprus skausmas</div>
       <p class="hint">Kiekvienam požymiui: 0 – nėra, 1 – lengvas, 2 – vidutinis, 3 – ryškus</p>
       <div class="grid-head grid-painad"><div>#</div><div>Požymis</div><div class="col-3">Pavyzdžiai</div><div class="col-4">Balai</div></div>
       <div id="abbey-items"></div>
@@ -390,7 +381,7 @@
 
     <!-- Rekomendacijos -->
     <div id="recommend-card" class="card hidden">
-      <h2>3. Rekomendacijos pagal skausmą</h2>
+      <h2>Rekomendacijos pagal skausmą</h2>
       <p id="recommend-main"></p>
       <p id="recommend-extra" class="hint"></p>
       <button class="secondary-btn" onclick="resetApp()">Naujas pacientas</button>
@@ -448,8 +439,8 @@ function showScreen(id){
 
 function hideAllScaleCards(){
   ['card-simple','card-dvprs','card-painad','card-paic','card-abbey',
-   'recommend-card','branch-18-23','branch-0-17','branch-0-17-paic',
-   'simple-scales-result','dvprs-result-box','painad-result-box','paic-result-box','abbey-result-box'
+   'recommend-card','dvprs-result-card','branch-18-23','branch-0-17','branch-0-17-paic',
+   'simple-scales-result','painad-result-box','paic-result-box','abbey-result-box'
   ].forEach(id=>{
     const el=document.getElementById(id);
     if(el) el.classList.add('hidden');
@@ -724,31 +715,58 @@ function goFromSimpleToPainad(){
 }
 
 /* ---------------- DVPRS ---------------- */
-const dvprsItems=[{s:0,t:'Nėra skausmo'},{s:1,t:'Vos jaučiamas'},{s:2,t:'Labai lengvas'},{s:3,t:'Lengvas'},
-{s:4,t:'Vidutinis'},{s:5,t:'Vidutinis, trukdantis'},{s:6,t:'Riboja veiklą'},{s:7,t:'Stiprus'},
-{s:8,t:'Labai stiprus'},{s:9,t:'Beveik nepakeliamas'},{s:10,t:'Blogiausias įsivaizduojamas'}];
-const dvprsFaces=['🙂','🙂','🙂','🙂','😐','😐','😕','😣','😫','😭','😭'];
+const dvprsItems=[
+  {s:0,t:'Skausmo nėra',face:'😊',cls:'level-0-3'},
+  {s:1,t:'Vos jaučiamas',face:'🙂',cls:'level-0-3'},
+  {s:2,t:'Labai lengvas',face:'🙂',cls:'level-0-3'},
+  {s:3,t:'Lengvas',face:'😐',cls:'level-0-3'},
+  {s:4,t:'Vidutinis',face:'😕',cls:'level-4-6'},
+  {s:5,t:'Vidutinis, trukdo veiklai',face:'😕',cls:'level-4-6'},
+  {s:6,t:'Ryškiau riboja veiklą',face:'😣',cls:'level-4-6'},
+  {s:7,t:'Stiprus',face:'😖',cls:'level-7-9'},
+  {s:8,t:'Labai stiprus',face:'😫',cls:'level-7-9'},
+  {s:9,t:'Beveik nepakeliamas',face:'😭',cls:'level-7-9'},
+  {s:10,t:'Blogiausias įsivaizduojamas',face:'🆘',cls:'level-10'}
+];
 const dvprsContainer=document.getElementById('dvprs-options');
-dvprsItems.forEach(i=>{
-  const div=document.createElement('div');
-  const cls=i.s<=3?'dvprs-mild':i.s<=6?'dvprs-moderate':'dvprs-severe';
-  div.className=`dvprs-item ${cls}`;
-  div.innerHTML=`<span class="dvprs-face">${dvprsFaces[i.s]}</span>
-    <input type="radio" name="dvprs-score" value="${i.s}">
-    <span><strong>${i.s}</strong><br>${i.t}</span>`;
-  dvprsContainer.appendChild(div);
+dvprsItems.forEach(item=>{
+  const label=document.createElement('label');
+  label.className=`pain-choice ${item.cls}`;
+  label.innerHTML=`<span class="face">${item.face}</span>
+    <strong>${item.s}</strong>
+    <span>${item.t}</span>
+    <input type="radio" name="dvprs-score" value="${item.s}">`;
+  label.addEventListener('click',()=>{
+    document.querySelectorAll('#dvprs-options .pain-choice').forEach(el=>el.classList.remove('active'));
+    label.classList.add('active');
+    label.querySelector('input').checked=true;
+    selectDvprs(item.s);
+  });
+  dvprsContainer.appendChild(label);
 });
-function calculateDvprs(){
-  const sel=document.querySelector('input[name="dvprs-score"]:checked');
-  if(!sel){alert('Pasirinkite DVPRS balą.');return;}
-  const v=Number(sel.value);
-  let k='none'; if(v>=7)k='severe'; else if(v>=4)k='moderate'; else if(v>=1)k='mild';
-  document.getElementById('dvprs-result-main').innerHTML=`<strong>DVPRS:</strong> ${v} – ${dvprsItems[v].t}`;
-  document.getElementById('dvprs-result-interpretation').textContent='Pagal šį balą parenkamas skausmo malšinimo intensyvumas.';
-  document.getElementById('dvprs-result-box').classList.remove('hidden');
-  showRecommendations(k);
-}
 
+function selectDvprs(v){
+  let main='';
+  let extra='';
+
+  if(v===0){
+    main='Skausmo nėra.';
+    extra='Pakartotinis vertinimas pagal poreikį.';
+  }else if(v>=1 && v<=3){
+    main='Lengvas skausmas.';
+    extra='Galima pasiūlyti nefarmakologinį skausmo malšinimą: patogesnė padėtis, atsipalaidavimas, dėmesio nukreipimas.';
+  }else if(v>=4 && v<=6){
+    main='Vidutinio stiprumo skausmas.';
+    extra='Galima taikyti nefarmakologines priemones. Esant poreikiui – nuskausminimas pagal gydytojo paskyrimą.';
+  }else{
+    main='Stiprus skausmas.';
+    extra='Reikalingas nuskausminimas pagal gydytojo paskyrimą.';
+  }
+
+  document.getElementById('dvprs-result-main').innerHTML=`<strong>DVPRS ${v}/10.</strong> ${main}`;
+  document.getElementById('dvprs-result-interpretation').textContent=extra;
+  document.getElementById('dvprs-result-card').classList.remove('hidden');
+}
 /* ---------------- PAINAD ---------------- */
 const painadItems=[
  {id:'breath',i:1,t:'Kvėpavimas',m0:'0 – normalus',m1:'1 – retkarčiais apsunkintas',m2:'2 – ryškiai apsunkintas'},
