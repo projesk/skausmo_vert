@@ -248,6 +248,7 @@
     <div style="margin-top:10px">
       <button class="primary-btn" onclick="calculateShortTest()">Įvertinti ir tęsti</button>
   <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
+  <button class="secondary-btn" onclick="resetShortTest()">Naujas pacientas</button>
       
     </div>
 
@@ -895,3 +896,16 @@ function resetApp(){ window.location.reload(); }
 </script>
 </body>
 </html>
+
+<script>
+function resetShortTest(){
+  document.querySelectorAll('#screen-short-test input[type="radio"]').forEach(el=>{
+    el.checked = false;
+  });
+  const result = document.getElementById('short-test-result');
+  if(result){
+    result.innerHTML = '';
+    result.classList.add('hidden');
+  }
+}
+</script>
