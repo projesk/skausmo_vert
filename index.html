@@ -416,7 +416,7 @@
     <div id="card-abbey" class="card hidden">
       <h2>Abbey skausmo skalė</h2>
       <div class="abbey-note"><strong>Trumpas vertinimo paaiškinimas:</strong><br>0–2 – skausmo nėra<br>3–7 – lengvas skausmas<br>8–13 – vidutinio stiprumo skausmas<br>14–18 – stiprus skausmas</div>
-      <p class="hint">Kiekvienam požymiui: 0 – nėra, 1 – lengvas, 2 – vidutinis, 3 – ryškus, X – nevertinta</p>
+      <p class="hint">Kiekvienam požymiui: 0 – nėra, 1 – lengvas, 2 – vidutinis, 3 – ryškus</p>
       <div class="grid-head grid-painad"><div>#</div><div>Požymis</div><div class="col-3">Pavyzdžiai</div><div class="col-4">Balai</div></div>
       <div id="abbey-items"></div>
       <button class="primary-btn" onclick="calculateAbbey()">Skaičiuoti Abbey</button>
@@ -899,13 +899,16 @@ function resetApp(){ window.location.reload(); }
 
 <script>
 function resetShortTest(){
-  document.querySelectorAll('#screen-short-test input[type="radio"]').forEach(el=>{
+  document.querySelectorAll('#screen-mmse input[type="radio"]').forEach(el=>{
     el.checked = false;
   });
   const result = document.getElementById('short-test-result');
   if(result){
-    result.innerHTML = '';
     result.classList.add('hidden');
   }
+  const main = document.getElementById('short-test-main');
+  const extra = document.getElementById('short-test-extra');
+  if(main) main.textContent = '';
+  if(extra) extra.textContent = '';
 }
 </script>
