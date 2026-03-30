@@ -229,8 +229,7 @@
   <!-- SKALIŲ EKRANAS (routing pagal MMSE) -->
   <div id="screen-scales" class="hidden">
     <div class="card">
-      <h2>2. Skausmo skalės parinkimas</h2>
-      <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button></h2>
+      <h2>2. Skausmo skalės parinkimas</h2></h2>
       <p id="scale-intro" class="hint"></p>
     </div>
 
@@ -772,7 +771,7 @@ let pIdx=1;
 paicItems.forEach(i=>{
   const row=document.createElement('div'); row.className='grid-row grid-paic';
   row.innerHTML=`<div>${pIdx++}</div><div><strong>${i.t}</strong></div>
-  <div class="col-3">Stebėkite požymį ir įvertinkite 0–3, X – nevertinta</div>
+  <div class="col-3">0 – nėra, 1 – lengvas, 2 – vidutinis, 3 – ryškus</div>
   <div class="col-4"><div class="radio-group">
     <label><input type="radio" name="paic-${i.id}" value="0">0</label>
     <label><input type="radio" name="paic-${i.id}" value="1">1</label>
