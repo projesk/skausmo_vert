@@ -217,7 +217,7 @@
 
     <div style="margin-top:10px">
       <button class="primary-btn" onclick="calculateShortTest()">Įvertinti ir tęsti</button>
-      <button class="secondary-btn" onclick="showScreen('screen-start')">Grįžti</button>
+      <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
     </div>
 
     <div id="short-test-result" class="hidden" style="margin-top:12px;border-left:4px solid var(--primary);padding-left:12px">
@@ -239,6 +239,7 @@
       <p class="hint">Ar pacientas geba suprasti paprastą vizualinę ir žodinę informaciją?</p>
       <button class="primary-btn" onclick="branch1823('yes')">Taip – vizualinės / žodinės skalės (Iowa, VDS, veidukai, NRS)</button>
       <button class="secondary-btn" onclick="branch1823('no')">Ne – PAINAD skalė</button>
+      <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
     </div>
 
     <!-- 0–17 šaka -->
@@ -247,6 +248,7 @@
       <p class="hint">Pasirinkite pagal situaciją:</p>
       <button class="primary-btn" onclick="branch017Quick()">Greitas įvertinimas – Abbey</button>
       <button class="secondary-btn" onclick="branch017Detailed()">Išsamus – PAIC-15</button>
+      <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
     </div>
 
     <div id="branch-0-17-paic" class="card hidden">
@@ -254,6 +256,7 @@
       <p class="hint">Ar mokate naudoti PAIC-15?</p>
       <button class="primary-btn" onclick="branch017Paic('yes')">Taip – PAIC-15</button>
       <button class="secondary-btn" onclick="branch017Paic('no')">Ne – Abbey</button>
+      <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
       <p class="hint">PAIC-15 mokymai: <a href="https://paic15.org/en/1" target="_blank" rel="noopener">https://paic15.org/en/1</a></p>
     </div>
 
@@ -310,6 +313,7 @@
       </div>
       <div style="margin-top:10px">
         <button class="primary-btn" onclick="summarizeSimpleScales()">Apskaičiuoti</button>
+        <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
       </div>
 
       <div id="simple-scales-result" class="hidden">
@@ -341,6 +345,7 @@
         <label class="level-9-10" data-score="10"><input type="radio" name="dvprs-score" value="10"><div class="top-line"></div><div class="score-line"><span></span><span>10/10</span></div><div><span class="face">🆘</span><span class="score-num">10</span></div><div class="desc">DIDŽIAUSIAS SKAUSMAS, NIEKAS DAUGIAU NERŪPI</div></label>
       </div>
       <button id="dvprs-continue" class="primary-btn" disabled onclick="calculateDvprs()">Toliau</button>
+      <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
       <div id="dvprs-result-box" class="hidden">
         <p id="dvprs-result-main"></p>
         <div id="dvprs-result-interpretation" class="hint"></div>
@@ -354,6 +359,7 @@
       <div class="grid-head grid-painad"><div>#</div><div>Kategorija</div><div class="col-3">Pavyzdžiai</div><div class="col-4">Balai</div></div>
       <div id="painad-items"></div>
       <button class="primary-btn" onclick="calculatePainad()">Skaičiuoti PAINAD</button>
+      <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
       <div id="painad-result-box" class="hidden">
         <p id="painad-result-main"></p>
         <p id="painad-result-interpretation" class="hint"></p>
@@ -367,6 +373,7 @@
       <div class="grid-head grid-paic"><div>#</div><div>Požymis</div><div class="col-3">Paaiškinimas</div><div class="col-4">Balai</div></div>
       <div id="paic-items"></div>
       <button class="primary-btn" onclick="calculatePaic()">Skaičiuoti PAIC</button>
+      <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
       <div id="paic-result-box" class="hidden">
         <p id="paic-result-main"></p>
         <p id="paic-result-interpretation" class="hint"></p>
@@ -380,13 +387,8 @@
       <p class="hint">Kiekvienam požymiui: 0 – nėra, 1 – lengvas, 2 – vidutinis, 3 – ryškus</p>
       <div class="grid-head grid-painad"><div>#</div><div>Požymis</div><div class="col-3">Pavyzdžiai</div><div class="col-4">Balai</div></div>
       <div id="abbey-items"></div>
-      <h3>Skausmo tipas</h3>
-      <div class="radio-group">
-        <label><input type="radio" name="abbey-type" value="Lėtinis">Lėtinis</label>
-        <label><input type="radio" name="abbey-type" value="Ūminis">Ūminis</label>
-        <label><input type="radio" name="abbey-type" value="Ūminis lėtinio fone">Ūminis lėtinio fone</label>
-      </div>
       <button class="primary-btn" onclick="calculateAbbey()">Skaičiuoti Abbey</button>
+      <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
       <div id="abbey-result-box" class="hidden">
         <p id="abbey-result-main"></p>
         <p id="abbey-result-interpretation" class="hint"></p>
@@ -399,6 +401,7 @@
       <p id="recommend-main"></p>
       <p id="recommend-extra" class="hint"></p>
       <button class="secondary-btn" onclick="resetApp()">Naujas pacientas</button>
+      <button class="secondary-btn" onclick="goHome()">Atgal į pagrindinį langą</button>
     </div>
   </div>
 </div>
@@ -825,10 +828,8 @@ function calculateAbbey(){
   else if(sum<=7){txt='3–7 – lengvas skausmas.'; k='mild';}
   else if(sum<=13){txt='8–13 – vidutinio stiprumo skausmas.'; k='moderate';}
   else {txt='14–18 – stiprus skausmas.'; k='severe';}
-  const typeSel=document.querySelector('input[name="abbey-type"]:checked');
-  const pType= typeSel ? typeSel.value : 'nepasirinkta';
   document.getElementById('abbey-result-main').innerHTML=`<strong>Abbey suma:</strong> ${sum}/18`;
-  document.getElementById('abbey-result-interpretation').innerHTML=txt+`<br>Skausmo tipas: ${pType}.`;
+  document.getElementById('abbey-result-interpretation').innerHTML=txt;
   document.getElementById('abbey-result-box').classList.remove('hidden');
   showRecommendations(k);
 }
@@ -854,6 +855,7 @@ function showRecommendations(level){
   }
   card.classList.remove('hidden');
 }
+function goHome(){ showScreen('screen-start'); }
 function resetApp(){ window.location.reload(); }
 </script>
 </body>
