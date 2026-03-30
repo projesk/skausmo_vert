@@ -32,13 +32,36 @@
     .card{
       background:var(--card); border-radius:var(--radius);
       box-shadow:0 4px 12px rgba(0,0,0,.06);
-      padding:14px 16px; margin-top:14px;
+      padding:18px 20px; margin-top:16px;
     }
     .hint{color:var(--muted);font-size:.92rem}
     .hidden{display:none!important}
     .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    .radio-group{display:flex;gap:10px;flex-wrap:wrap}
-    .radio-group label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+    .radio-group{display:flex;gap:12px;flex-wrap:wrap}
+    .radio-group label{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+
+    input[type="radio"]{transform:scale(1.15)}
+    button{min-height:44px}
+
+    .vds-scale{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-top:8px;
+    }
+    .vds-option{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:54px;
+      padding:10px 12px;
+      border:1px solid #e5e7eb;
+      border-radius:12px;
+      background:#fafafa;
+      font-size:.98rem;
+      font-weight:600;
+    }
     input[type="number"], input[type="text"], textarea{
       width:100%; max-width:220px; padding:8px 10px; border:1px solid #d6d6d6; border-radius:10px;
       font-size:1rem; background:#fff;
@@ -74,15 +97,15 @@
     .faces-option .desc{font-size:.9rem}
 
     /* DVPRS kaip skausmo vertinimo formoje */
-    .pain-scale{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;justify-content:center;margin:12px 0}
-    .pain-scale label{display:block;text-align:left;font-size:14px;padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,.06);user-select:none;cursor:pointer;background:#fff;min-height:72px}
+    .pain-scale{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;justify-content:center;margin:14px 0}
+    .pain-scale label{display:block;text-align:left;font-size:15px;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.06);user-select:none;cursor:pointer;background:#fff;min-height:88px}
     .pain-scale input{position:absolute;opacity:0;pointer-events:none}
     .pain-scale label.selected{outline:3px solid rgba(75,123,236,.18);border-color:#b9cdf7}
     .face{font-size:20px;display:inline-block;margin-right:6px}
     .top-line{height:5px;border-radius:999px;margin-bottom:8px}
     .score-line{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#555;margin-bottom:4px}
-    .score-num{font-size:30px;font-weight:700;color:#111;line-height:1}
-    .desc{font-size:12px;line-height:1.2;font-weight:700;text-transform:uppercase;margin-top:6px}
+    .score-num{font-size:34px;font-weight:700;color:#111;line-height:1}
+    .desc{font-size:12.5px;line-height:1.25;font-weight:700;text-transform:uppercase;margin-top:8px}
     .level-0-3 .top-line{background:#20b358}
     .level-4-5 .top-line{background:#f1c232}
     .level-6 .top-line{background:#f39c12}
@@ -90,7 +113,7 @@
     .level-9-10 .top-line{background:#cf2f2f}
 
     .nrs-radio-scale{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:6px;align-items:end;margin-top:8px}
-    .nrs-radio-option{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 2px;border:1px solid #e5e7eb;border-radius:10px;background:#fafafa;font-size:.88rem}
+    .nrs-radio-option{display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 4px;border:1px solid #e5e7eb;border-radius:12px;background:#fafafa;font-size:.95rem;min-height:58px}
     .nrs-radio-option strong{font-size:.95rem}
 
     .abbey-note{margin:.5rem 0 1rem;padding:10px 12px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;font-size:.92rem;color:#334155}
@@ -125,6 +148,7 @@
       .modal-text{font-size:9vw}
       .pain-scale{grid-template-columns:repeat(2,1fr)}
       .nrs-radio-scale{grid-template-columns:repeat(4,minmax(0,1fr))}
+      .vds-scale{grid-template-columns:repeat(2,minmax(0,1fr))}
     }
   </style>
 </head>
@@ -251,11 +275,11 @@
 
       <hr>
       <h3>Žodinė skausmo skalė (VDS)</h3>
-      <div class="radio-group">
-        <label><input type="radio" name="vds" value="0">0 – nėra</label>
-        <label><input type="radio" name="vds" value="1">1 – lengvas</label>
-        <label><input type="radio" name="vds" value="2">2 – vidutinis</label>
-        <label><input type="radio" name="vds" value="3">3 – stiprus</label>
+      <div class="vds-scale">
+        <label class="vds-option"><input type="radio" name="vds" value="0">0 – nėra</label>
+        <label class="vds-option"><input type="radio" name="vds" value="1">1 – lengvas</label>
+        <label class="vds-option"><input type="radio" name="vds" value="2">2 – vidutinis</label>
+        <label class="vds-option"><input type="radio" name="vds" value="3">3 – stiprus</label>
       </div>
 
       <hr>
