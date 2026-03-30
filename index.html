@@ -20,12 +20,35 @@
       --radius:14px;
     }
     *{box-sizing:border-box}
+    html{
+      -webkit-text-size-adjust:100%;
+      text-size-adjust:100%;
+      height:100%;
+    }
     body{
       margin:0;
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      min-height:100%;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
       background:var(--bg); color:#222;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      -webkit-tap-highlight-color:transparent;
+      padding-bottom:env(safe-area-inset-bottom);
     }
-    .app{max-width:980px;margin:0 auto;padding:16px 10px 42px}
+    button,input,textarea,select{font:inherit}
+    button{
+      -webkit-appearance:none;
+      appearance:none;
+      touch-action:manipulation;
+    }
+    input[type="radio"]{
+      accent-color:var(--primary);
+    }
+    .app{
+      max-width:980px;
+      margin:0 auto;
+      padding:16px 10px calc(42px + env(safe-area-inset-bottom));
+    }
     h1{font-size:1.55rem;margin:.2rem 0}
     h2{font-size:1.2rem;margin:1rem 0 .5rem}
     h3{font-size:1rem;margin:.7rem 0 .25rem}
@@ -149,6 +172,13 @@
       .pain-scale{grid-template-columns:repeat(2,1fr)}
       .nrs-radio-scale{grid-template-columns:repeat(4,minmax(0,1fr))}
       .vds-scale{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .row{gap:10px}
+      .primary-btn,.secondary-btn{width:100%;justify-content:center}
+      .card{padding:16px 14px}
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      body{padding-bottom:max(env(safe-area-inset-bottom), 0px)}
     }
   </style>
 </head>
